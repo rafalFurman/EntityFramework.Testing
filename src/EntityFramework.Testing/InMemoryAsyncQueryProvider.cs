@@ -74,6 +74,7 @@ namespace EntityFramework.Testing
         /// <returns>The generic query-able object.</returns>
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
+            expression = QueryRewriter.Rewrite(expression);
             return new InMemoryAsyncQueryable<TElement>(this.provider.CreateQuery<TElement>(expression), this.include);
         }
 
@@ -95,6 +96,7 @@ namespace EntityFramework.Testing
         /// <returns>The result.</returns>
         public TResult Execute<TResult>(Expression expression)
         {
+            expression = QueryRewriter.Rewrite(expression);
             return this.provider.Execute<TResult>(expression);
         }
 
