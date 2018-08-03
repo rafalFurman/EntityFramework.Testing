@@ -1,12 +1,9 @@
-﻿using System.Linq.Expressions;
-
+﻿
 namespace EntityFramework.Testing.Tests
 {
+    using System.Linq.Expressions;
     using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class DefaultIfEmptyRewriterTests
@@ -26,7 +23,7 @@ namespace EntityFramework.Testing.Tests
             var baseQuery = new List<TestSubject>().AsQueryable();
             var query = baseQuery.DefaultIfEmpty();
 
-            var visitor = new DefaultIfEmptyRewriter();
+            var visitor = new DefaultRewriter();
             var expression = visitor.Visit(query.Expression);
 
             var call = Assert.IsAssignableFrom<MethodCallExpression>(expression);
@@ -44,7 +41,7 @@ namespace EntityFramework.Testing.Tests
                         from q in z.DefaultIfEmpty()
                         select new { x.Name, ParentName = q.Name };
 
-            var visitor = new DefaultIfEmptyRewriter();
+            var visitor = new DefaultRewriter();
             var expression = visitor.Visit(query.Expression);
 
             var selectMany = (MethodCallExpression)expression;
@@ -59,7 +56,7 @@ namespace EntityFramework.Testing.Tests
             var baseQuery = new List<TestSubject>().AsQueryable();
             var query = baseQuery.DefaultIfEmpty();
 
-            var visitor = new DefaultIfEmptyRewriter();
+            var visitor = new DefaultRewriter();
             var expression = visitor.Visit(query.Expression);
 
             var call = Assert.IsAssignableFrom<MethodCallExpression>(expression);
